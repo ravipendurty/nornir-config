@@ -23,3 +23,4 @@ output*
 cfg-*
 .env
 .ini
+venv
