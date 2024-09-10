@@ -1,0 +1,150 @@
+# Ansible inventory created from ['/workspaces/nornir-config/netlab/topology.yml', '/workspaces/nornir-config/netlab/defaults.yml', 'package:topology-defaults.yml']
+#
+
+%YAML 1.1
+---
+bgp:
+  advertise_loopback: true
+  community:
+    ibgp:
+    - standard
+    - large
+    - extended
+    ebgp:
+    - standard
+    - large
+    ibgp_localas:
+    - standard
+    - large
+    - extended
+  next_hop_self: true
+  _cprop_order:
+  - standard
+  - extended
+  - large
+  - link-bandwidth
+  as: 65001
+  router_id: 10.0.0.1
+  neighbors:
+  - name: edge2
+    as: 65001
+    type: ibgp
+    ipv4: 10.0.0.2
+    activate:
+      ipv4: true
+  ipv4: true
+vrf:
+  as: 65000
+  loopback: true
+vrfs:
+  CustA:
+    id: 1
+    rd: '65001:1'
+    import:
+    - '65001:1'
+    export:
+    - '65001:1'
+    af:
+      ipv4: true
+    vrfidx: 100
+    networks:
+    - ipv4: 10.2.0.1/32
+    loopback_address:
+      ipv4: 10.2.0.1/32
+interfaces:
+- ipv4: 10.1.0.2/30
+  type: p2p
+  linkindex: 1
+  name: edge1 -> core1
+  ifindex: 1
+  ifname: Ethernet1
+  clab:
+    name: et1
+  neighbors:
+  - ifname: Ethernet1
+    node: core1
+    ipv4: 10.1.0.1/30
+  ospf:
+    area: 0.0.0.0
+    passive: false
+    network_type: point-to-point
+- vrf: CustA
+  ipv4: 172.16.0.1/24
+  type: lan
+  role: stub
+  bridge: netlab_3
+  linkindex: 3
+  name: edge1 -> h1
+  ifindex: 2
+  ifname: Ethernet2
+  clab:
+    name: et2
+  neighbors:
+  - ifname: eth1
+    node: h1
+    ipv4: 172.16.0.4/24
+  bgp:
+    advertise: true
+- ipv4: 172.16.1.1/24
+  type: lan
+  role: stub
+  bridge: netlab_4
+  linkindex: 4
+  name: edge1 -> h2
+  ifindex: 3
+  ifname: Ethernet3
+  clab:
+    name: et3
+  neighbors:
+  - ifname: eth1
+    node: h2
+    ipv4: 172.16.1.5/24
+  ospf:
+    area: 0.0.0.0
+    passive: true
+    network_type: point-to-point
+  bgp:
+    advertise: true
+- type: loopback
+  name: VRF Loopback CustA
+  neighbors: []
+  vrf: CustA
+  virtual_interface: true
+  ifindex: 10001
+  ifname: Loopback1
+  ipv4: 10.2.0.1/32
+module:
+- bgp
+- ospf
+- vrf
+clab:
+  kind: ceos
+  env:
+    INTFTYPE: et
+    CLAB_MGMT_VRF: management
+box: ceos:4.32.1F
+ospf:
+  area: 0.0.0.0
+  router_id: 10.0.0.1
+  af:
+    ipv4: true
+af:
+  ipv4: true
+  vpnv4: true
+loopback:
+  ipv4: 10.0.0.1/32
+  ifname: Loopback0
+  ifindex: 0
+  type: loopback
+  neighbors: []
+  virtual_interface: true
+  ospf:
+    area: 0.0.0.0
+mgmt:
+  ifname: Management0
+  ipv4: 192.168.121.101
+  mac: 08:4f:a9:00:00:01
+hostname: clab-netlab-edge1
+config:
+- extra_config_mpls
+- extra_config_vpn

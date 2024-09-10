@@ -1,0 +1,9 @@
+# Ansible inventory created from ['/workspaces/nornir-config/netlab/topology.yml', '/workspaces/nornir-config/netlab/defaults.yml', 'package:topology-defaults.yml']
+#
+
+%YAML 1.1
+---
+netlab_module:
+- bgp
+- ospf
+- vrf

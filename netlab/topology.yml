@@ -1,0 +1,60 @@
+defaults.sources.extra: [ defaults.yml ]
+
+
+groups:
+  edge:
+    members:
+    - edge1
+    - edge2
+    module: [ vrf, ospf, bgp ]
+    config: [ extra_config_mpls, extra_config_vpn ]
+    bgp.as: 65001
+    vrf.loopback: True
+  core:
+    members:
+    - core1
+    module: [ ospf ]
+    config: [ extra_config_mpls ]
+  host:
+    members:
+    - h1
+    - h2
+    - h3
+    - h4
+    module: [ ]
+
+
+nodes:
+  edge1:
+    vrfs:
+      CustA:
+  edge2:
+    vrfs:
+      CustA:
+  core1:
+  h1:
+    device: linux
+  h2:
+    device: linux
+  h3:
+    device: linux
+  h4:
+    device: linux
+
+links:
+- edge1:
+  core1:
+- edge2:
+  core1:
+- edge1: { vrf: CustA }
+  h1:
+  type: lan
+- edge1:
+  h2:
+  type: lan
+- edge2: { vrf: CustA }
+  h3:
+  type: lan
+- edge2:
+  h4:
+  type: lan

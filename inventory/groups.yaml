@@ -1,0 +1,12 @@
+---
+eos:
+  username: admin
+  password: admin
+  platform: eos
+  data: {}
+edge:
+  data: {}
+site-A:
+  data: {}
+site-B:
+  data: {}

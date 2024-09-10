@@ -1,0 +1,69 @@
+# Ansible inventory created from ['/workspaces/nornir-config/netlab/topology.yml', '/workspaces/nornir-config/netlab/defaults.yml', 'package:topology-defaults.yml']
+#
+
+%YAML 1.1
+---
+interfaces:
+- ipv4: 10.1.0.1/30
+  type: p2p
+  linkindex: 1
+  name: core1 -> edge1
+  ifindex: 1
+  ifname: Ethernet1
+  clab:
+    name: et1
+  neighbors:
+  - ifname: Ethernet1
+    node: edge1
+    ipv4: 10.1.0.2/30
+  ospf:
+    area: 0.0.0.0
+    passive: false
+    network_type: point-to-point
+- ipv4: 10.1.0.5/30
+  type: p2p
+  linkindex: 2
+  name: core1 -> edge2
+  ifindex: 2
+  ifname: Ethernet2
+  clab:
+    name: et2
+  neighbors:
+  - ifname: Ethernet1
+    node: edge2
+    ipv4: 10.1.0.6/30
+  ospf:
+    area: 0.0.0.0
+    passive: false
+    network_type: point-to-point
+module:
+- ospf
+clab:
+  kind: ceos
+  env:
+    INTFTYPE: et
+    CLAB_MGMT_VRF: management
+box: ceos:4.32.1F
+ospf:
+  area: 0.0.0.0
+  router_id: 10.0.0.3
+  af:
+    ipv4: true
+af:
+  ipv4: true
+loopback:
+  ipv4: 10.0.0.3/32
+  ifname: Loopback0
+  ifindex: 0
+  type: loopback
+  neighbors: []
+  virtual_interface: true
+  ospf:
+    area: 0.0.0.0
+mgmt:
+  ifname: Management0
+  ipv4: 192.168.121.103
+  mac: 08:4f:a9:00:00:03
+hostname: clab-netlab-core1
+config:
+- extra_config_mpls

@@ -1,0 +1,82 @@
+name: netlab
+
+mgmt:
+  network: netlab_mgmt
+  ipv4-subnet: 192.168.121.0/24
+  # Note: 'start' not validated
+topology:
+  nodes:
+    edge1:
+      mgmt-ipv4: 192.168.121.101
+      kind: ceos
+      env: {'INTFTYPE': 'et', 'CLAB_MGMT_VRF': 'management'}
+      image: ceos:4.32.1F
+      runtime: docker
+      group: edge,as65001
+    edge2:
+      mgmt-ipv4: 192.168.121.102
+      kind: ceos
+      env: {'INTFTYPE': 'et', 'CLAB_MGMT_VRF': 'management'}
+      image: ceos:4.32.1F
+      runtime: docker
+      group: edge,as65001
+    core1:
+      mgmt-ipv4: 192.168.121.103
+      kind: ceos
+      env: {'INTFTYPE': 'et', 'CLAB_MGMT_VRF': 'management'}
+      image: ceos:4.32.1F
+      runtime: docker
+      group: core
+    h1:
+      mgmt-ipv4: 192.168.121.104
+      kind: linux
+      image: python:3.9-alpine
+      runtime: docker
+      group: host
+      binds:
+      - clab_files/h1/hosts:/etc/hosts
+    h2:
+      mgmt-ipv4: 192.168.121.105
+      kind: linux
+      image: python:3.9-alpine
+      runtime: docker
+      group: host
+      binds:
+      - clab_files/h2/hosts:/etc/hosts
+    h3:
+      mgmt-ipv4: 192.168.121.106
+      kind: linux
+      image: python:3.9-alpine
+      runtime: docker
+      group: host
+      binds:
+      - clab_files/h3/hosts:/etc/hosts
+    h4:
+      mgmt-ipv4: 192.168.121.107
+      kind: linux
+      image: python:3.9-alpine
+      runtime: docker
+      group: host
+      binds:
+      - clab_files/h4/hosts:/etc/hosts
+
+
+  links:
+  - endpoints:
+    - "edge1:et1"
+    - "core1:et1"
+  - endpoints:
+    - "edge2:et1"
+    - "core1:et2"
+  - endpoints:
+    - "edge1:et2"
+    - "h1:eth1"
+  - endpoints:
+    - "edge1:et3"
+    - "h2:eth1"
+  - endpoints:
+    - "edge2:et2"
+    - "h3:eth1"
+  - endpoints:
+    - "edge2:et3"
+    - "h4:eth1"

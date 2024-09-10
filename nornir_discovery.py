@@ -15,8 +15,8 @@ __license__ = "Python"
 import argparse
 import textfsm
 from nornir import InitNornir
-from nornir.plugins.tasks.networking import napalm_cli
-from nornir.plugins.functions.text import print_result
+from nornir_napalm.plugins.tasks import napalm_cli
+from nornir_utils.plugins.functions import print_result
 
 
 def send_napalm_commands(cmds, show_output=False, debug=False):
@@ -43,7 +43,7 @@ def send_napalm_commands(cmds, show_output=False, debug=False):
 
         # Instantiate the Nornir environment (based on our inventory hosts.yaml and groups.yaml
         # and config.yaml, if it exists, files)
-        nornir_instance = InitNornir(dry_run=True)
+        nornir_instance = InitNornir(config_file="config.yaml", dry_run=True)
 
         # Execute the commands in the 'cmds' variable using the napalm_cli plugin
         cli_result = nornir_instance.run(napalm_cli, commands=cmds)

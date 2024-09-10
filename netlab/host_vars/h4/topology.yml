@@ -1,0 +1,38 @@
+# Ansible inventory created from ['/workspaces/nornir-config/netlab/topology.yml', '/workspaces/nornir-config/netlab/defaults.yml', 'package:topology-defaults.yml']
+#
+
+%YAML 1.1
+---
+interfaces:
+- ipv4: 172.16.3.7/24
+  type: lan
+  role: stub
+  bridge: netlab_6
+  linkindex: 6
+  name: h4 -> edge2
+  ifindex: 1
+  ifname: eth1
+  mtu: 1500
+  neighbors:
+  - ifname: Ethernet3
+    node: edge2
+    ipv4: 172.16.3.2/24
+  gateway:
+    ipv4: 172.16.3.2/24
+module: []
+clab:
+  kind: linux
+  config_templates:
+  - hosts:/etc/hosts
+  binds:
+  - clab_files/h4/hosts:/etc/hosts
+box: python:3.9-alpine
+role: host
+mtu: 1500
+af:
+  ipv4: true
+mgmt:
+  ifname: eth0
+  ipv4: 192.168.121.107
+  mac: 08:4f:a9:00:00:07
+hostname: clab-netlab-h4
